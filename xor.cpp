@@ -24,11 +24,11 @@ int main()
 	NeuralNetwork xornet(3, xor_layers);
 	vector <double> res;
 
-	for (int i = 0; i < 100000; i++) {
-		xornet.train(v_xor1, r_xor1, 0, 0.2);
-		xornet.train(v_xor2, r_xor2, 0, 0.2);
-		xornet.train(v_xor3, r_xor3, 0, 0.2);
-		xornet.train(v_xor4, r_xor4, 0, 0.2);
+	for (int i = 0; i < 10000; i++) {
+		xornet.train(v_xor1, r_xor1, 0.5, 0.75);
+		xornet.train(v_xor2, r_xor2, 0.5, 0.75);
+		xornet.train(v_xor3, r_xor3, 0.5, 0.75);
+		xornet.train(v_xor4, r_xor4, 0.5, 0.75);
 	}
 	res = xornet.evaluate(v_xor1);
 	cout << "0 0" << endl;
