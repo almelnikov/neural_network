@@ -5,23 +5,7 @@
 using namespace std;
 
 const size_t train_cnt = 13;
-
-double deformed0[25] = {0, 1, 1, 1, 1,
-					    0, 0, 0, 0, 1,
-					    0, 1, 0, 0, 1,
-					    1, 1, 0, 0, 1,
-					    0, 1, 1, 1, 1
-					   };
-vector <double> v_deformed0(deformed0, deformed0 + 25);
-
-
-double deformed1[25] = {0, 0, 1, 1, 0,
-					    0, 0, 1, 1, 0,
-					    0, 0, 0, 1, 0,
-					    0, 0, 0, 1, 0,
-					    0, 0, 1, 1, 1
-					   };
-vector <double> v_deformed1(deformed1, deformed1 + 25);
+const size_t test_cnt = 4;
 
 template <typename T>
 void vector_print(const vector <T> &v)
@@ -80,8 +64,11 @@ int main()
 	NeuralNetwork dignet(2, dig_layers);
 	vector <double> res;
 	vector <vector <double> > digit_vec(train_cnt);
+	vector <vector <double> > test_vec(test_cnt);
 	vector <int> digit_n(train_cnt);
+	vector <int> digit_test(test_cnt);
 
+	// Для обучения
 	digit_vec[0] = read_digit(digit_n[0], "digits_train/0");
 	digit_vec[1] = read_digit(digit_n[1], "digits_train/1");
 	digit_vec[2] = read_digit(digit_n[2], "digits_train/2");
@@ -94,8 +81,13 @@ int main()
 	digit_vec[9] = read_digit(digit_n[9], "digits_train/7");
 	digit_vec[10] = read_digit(digit_n[10], "digits_train/8");
 	digit_vec[11] = read_digit(digit_n[11], "digits_train/9");
-	digit_vec[12] = read_digit(digit_n[12], "digits_train/notadigit3");	
+	digit_vec[12] = read_digit(digit_n[12], "digits_train/notadigit3");
 
+	// Для проверки работы на искаженных цифрах
+	test_vec[0] = read_digit(digit_test[0], "digits_test/0_1");
+	test_vec[1] = read_digit(digit_test[1], "digits_test/1_1");
+	test_vec[2] = read_digit(digit_test[2], "digits_test/7_1");
+	test_vec[3] = read_digit(digit_test[3], "digits_test/8_1");
 
 	for (int i = 0; i < 10000; i++) {
 		int num = i % train_cnt;
@@ -114,9 +106,14 @@ int main()
 		cout << endl;
 	}
 
-	res = dignet.evaluate(digit_vec[0]);
-	cout << endl << "0" << endl;
-	vector_print(res);
+	cout << "Test data:" << endl;
+	for (int i = 0; i < test_cnt; i++) {
+		res = dignet.evaluate(test_vec[i]);
+		cout << endl << digit_test[i] << endl;
+		vector_print(res);
+		print_mostsimilar(res);
+		cout << endl;
+	}
 
 	return 0;
 }
