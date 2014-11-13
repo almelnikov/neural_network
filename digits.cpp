@@ -58,11 +58,40 @@ void print_mostsimilar(vector <double> &vec)
 		 max << endl;
 }
 
+vector <double> generate_deformed(vector <double> vec, int n)
+{
+	int *rands = new int [n];
+	int vec_pos;
+	vector <double> res = vec;
+	
+	for (int i = 0; i < n; i++) {
+		bool found_repeat;
+		do {
+			found_repeat = false;
+			vec_pos = rand() % res.size();
+		
+			for (int j = 0; j < i; j++) {
+				if (rands[j] == vec_pos) {
+					found_repeat = true;
+					break;
+				} 
+			}
+		} while (found_repeat);
+		
+		rands[i] = vec_pos;
+		if (res[vec_pos] == 0)
+			res[vec_pos] = 1;
+		else
+			res[vec_pos] = 0;
+	}
+	return res;
+}
+
 int main()
 {
 	const unsigned int dig_layers[3] = {25, 25, 10};
 	NeuralNetwork dignet(2, dig_layers);
-	vector <double> res;
+	vector <double> res, deformed_vec;
 	vector <vector <double> > digit_vec(train_cnt);
 	vector <vector <double> > test_vec(test_cnt);
 	vector <int> digit_n(train_cnt);
@@ -113,6 +142,37 @@ int main()
 		vector_print(res);
 		print_mostsimilar(res);
 		cout << endl;
+	}
+	// Проверка на искаженных цифрах
+	for (int i = 0; i < train_cnt; i++) {
+		if (digit_n[i] >= 0) {
+			for (int j = 1; j <= 5; j++) {
+				int right_cnt = 0, right_g05 = 0;
+			
+				for (int rep_i = 0; rep_i < 100; ++rep_i) {
+					int maxi = 0;
+					double max;
+					
+					deformed_vec = generate_deformed(digit_vec[i], j);
+					res = dignet.evaluate(deformed_vec);
+					max = res[0];
+					for (int k = 1; k < res.size(); k++) {
+						if (max < res[k]) {
+							max = res[k];
+							maxi = k;
+						}
+					}
+					if (maxi == digit_n[i]) {
+						if (max > 0.5)
+							++right_g05;
+						++right_cnt;
+					}
+				}
+				cout << digit_n[i] << " changed bits "  << j << " right ";
+				cout << right_cnt << " right and greater then 0.5 " <<
+					 right_g05 << endl;
+			}
+		}
 	}
 
 	return 0;
