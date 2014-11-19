@@ -1,5 +1,5 @@
-#ifndef __NNETWORK_HEADER
-#define __NNETWORK_HEADER
+#ifndef _NNETWORK_HEADER
+#define _NNETWORK_HEADER
 
 #include <iostream>
 #include <cmath>
