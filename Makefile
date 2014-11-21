@@ -11,11 +11,17 @@ test: nnetwork.o test.cpp
 xor: nnetwork.o xor.cpp
 	$(CC) $(CFLAGS) xor.cpp nnetwork.o -o xor
 
-digits: nnetwork.o digits.cpp
-	$(CC) $(CFLAGS) digits.cpp nnetwork.o -o digits
+digits: digitops.o nnetwork.o digits.cpp
+	$(CC) $(CFLAGS) digits.cpp nnetwork.o digitops.o -o digits
 
 nnetwork.o: nnetwork.cpp
 	$(CC) $(CFLAGS) -c nnetwork.cpp
+
+hopfield.o: hopfield.cpp
+	$(CC) $(CFLAGS) -c hopfield.cpp
+
+digitops.o: digitops.cpp
+	$(CC) $(CFLAGS) -c digitops.cpp
 
 clean:
 	rm -f *.o test xor digits
