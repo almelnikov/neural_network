@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 class Hopfield {
 public:
@@ -14,6 +15,7 @@ public:
 private:
 	std::vector <std::vector <double> > _mat;
 	size_t _size;
+	double sgn(double d);
 };
 
 #endif
