@@ -73,8 +73,8 @@ int main()
 	// Для проверки работы на искаженных цифрах
 	test_vec[0] = read_digit(digit_test[0], "digits_test/0_1");
 	test_vec[1] = read_digit(digit_test[1], "digits_test/1_1");
-	test_vec[2] = read_digit(digit_test[2], "digits_test/7_1");
-	test_vec[3] = read_digit(digit_test[3], "digits_test/8_1");
+	test_vec[2] = read_digit(digit_test[2], "digits_test/2_1");
+	test_vec[3] = read_digit(digit_test[3], "digits_test/7_1");
 
 	for (int i = 0; i < 10000; i++) {
 		int num = i % train_cnt;

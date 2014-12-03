@@ -5,8 +5,9 @@
 
 using namespace std;
 
-const size_t train_cnt = 10;
+const size_t train_cnt = 3;
 const size_t test_cnt = 4;
+const size_t net_size = 30;
 
 template <typename T>
 void vector_print(const vector <T> &v)
@@ -39,8 +40,7 @@ vector <double> &null_tominusone(vector <double> &vec)
 
 int main()
 {
-	const unsigned int dig_layers[3] = {25, 25, 10};
-	Hopfield dignet(80);
+	Hopfield dignet(net_size);
 	vector <double> res, deformed_vec;
 	vector <vector <double> > digit_vec(train_cnt);
 	vector <vector <double> > test_vec(test_cnt);
@@ -51,6 +51,7 @@ int main()
 	digit_vec[0] = read_digit(emptyint, "digits_train/0");
 	digit_vec[1] = read_digit(emptyint, "digits_train/1");
 	digit_vec[2] = read_digit(emptyint, "digits_train/2");
+	/*
 	digit_vec[3] = read_digit(emptyint, "digits_train/3");
 	digit_vec[4] = read_digit(emptyint, "digits_train/4");
 	digit_vec[5] = read_digit(emptyint, "digits_train/5");
@@ -58,11 +59,12 @@ int main()
 	digit_vec[7] = read_digit(emptyint, "digits_train/7");
 	digit_vec[8] = read_digit(emptyint, "digits_train/8");
 	digit_vec[9] = read_digit(emptyint, "digits_train/9");
+	*/
 
 	// Для проверки работы на искаженных цифрах
 	test_vec[0] = read_digit(digit_test[0], "digits_test/0_1");
 	test_vec[1] = read_digit(digit_test[1], "digits_test/1_1");
-	test_vec[2] = read_digit(digit_test[2], "digits_test/7_1");
+	test_vec[2] = read_digit(digit_test[2], "digits_test/2_1");
 	test_vec[3] = read_digit(digit_test[3], "digits_test/8_1");
 
 
@@ -81,6 +83,8 @@ int main()
 	for (int i = 0; i < test_cnt; i++) {
 		res = dignet.evaluate(test_vec[i]);
 		cout << endl << digit_test[i] << endl;
+		print_digit(test_vec[i]);
+		cout << "Restored:" << endl;
 		print_digit(res);
 		cout << endl;
 	}
